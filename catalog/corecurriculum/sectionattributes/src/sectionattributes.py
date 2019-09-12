@@ -94,24 +94,18 @@ try:
                 courses = [x for x in res.json()]
                 for item in courses:
                     item["sectionAttribute"] = attr
-                    spinner.text = f'{spinnertxt}: {n} courses observed, generating {attr}.jsonl'
+                    spinner.text = f'{spinnertxt}: {n} courses observed, generating `{term} {attr}.jsonl`'
                     n += 1
                 attributed_courses += courses
-            with open(f'{attr}.jsonl', 'w') as f:
+            with open(f'{term} {attr}.jsonl', 'w') as f:
                 for item in attributed_courses:
                     f.write(f'{json.dumps(item)}\n')
     spinner.succeed()
-    print(f'Files ', end='')
-    for i in range(0, len(catalog_data["sectionAttributes"])):
-        if i != (len(catalog_data["sectionAttributes"]) - 1):
-            print(f'{catalog_data["sectionAttributes"][i]["id"]}.jsonl, ', end='')
-        else:
-            print(f'and {catalog_data["sectionAttributes"][i]["id"]}.jsonl', end='')
-    print(f' were written.')
+    print(f'Files were written')
 except Exception as err:
     spinner.fail()
     print(err)
 
 # write manifest.json
 with open(f'manifest.json', 'w') as f:
-    f.write(f'{json.dumps(catalog_data)}\n')
+    f.write(f'{json.dumps(catalog_data, indent=4, sort_keys=True)}\n')
