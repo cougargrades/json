@@ -79,7 +79,6 @@ try:
     n = 0
     spinner.start()
     
-    catalog_data["courses"] = []
     # for every term currently accessible
     for term in catalog_data["terms"]:
         res = requests.get(f'{HOST}/api/terms/{term}/sectionattributes')
@@ -105,12 +104,14 @@ try:
     print(f'Files ', end='')
     for i in range(0, len(catalog_data["sectionAttributes"])):
         if i != (len(catalog_data["sectionAttributes"]) - 1):
-            print(f'{catalog_data["sectionAttributes"][i]}.jsonl, ', end='')
+            print(f'{catalog_data["sectionAttributes"][i]["id"]}.jsonl, ', end='')
         else:
-            print(f'and {catalog_data["sectionAttributes"][i]}.jsonl', end='')
+            print(f'and {catalog_data["sectionAttributes"][i]["id"]}.jsonl', end='')
     print(f' were written.')
 except Exception as err:
     spinner.fail()
     print(err)
 
-
+# write manifest.json
+with open(f'manifest.json', 'w') as f:
+    f.write(f'{json.dumps(catalog_data)}\n')
