@@ -1,2 +1,2 @@
 # json
-Pre-computed JSON data
+Pre-computed JSON data, also on github pages
